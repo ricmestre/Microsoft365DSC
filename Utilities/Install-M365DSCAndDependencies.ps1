@@ -130,7 +130,6 @@ try
         Write-Output "Configuring OS environment"
         [System.Environment]::SetEnvironmentVariable('M365DSCTelemetryEnabled', $false, [System.EnvironmentVariableTarget]::Process)
 
-        Write-Output "Copying Microsoft365DSC module to PowerShell 7 module path"
         $PSVersion = [System.String]$PSVersionTable.PSVersion
         $SDK = dotnet --list-sdks
         if ($LASTEXITCODE -ne 0)
@@ -143,11 +142,24 @@ try
             $SDKVersion = $SDK.Split(' ')[0].SubString(0, 4)
             $destinationPath = "/usr/share/powershell/.store/powershell.linux.x64/{0}/powershell.linux.x64/{1}/tools/net{2}/any/Modules/Microsoft365DSC" `
                 -f $PSVersion, $PSVersion, $SDKVersion
+
+            Write-Output "Installing Pester module"
+            $Parameters = @{
+                Name                = "Pester"
+                Repository          = "PSGallery"
+                Scope               = "AllUsers"
+                SkipDependencyCheck = [Switch]$true
+                TrustRepository     = [Switch]$true
+                AcceptLicense       = [Switch]$true
+                Prerelease          = [Switch]$true
+            }
+            Install-PSResource @Parameters
         }
         else
         {
             $destinationPath = "/opt/microsoft/powershell/7/Modules/Microsoft365DSC"
         }
+        Write-Output "Copying Microsoft365DSC module to PowerShell 7 module path"
         $null = New-Item -Path $destinationPath -ItemType Directory -Force
         $moduleBasePath = (Get-Module -Name Microsoft365DSC).ModuleBase
         Copy-Item -Path "$moduleBasePath/*" -Recurse -Destination $destinationPath -Force
