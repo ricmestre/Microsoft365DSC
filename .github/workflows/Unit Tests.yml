@@ -41,7 +41,6 @@ jobs:
         shell: pwsh
         run: |
           $env:PSModulePath = $env:PSModulePath + [System.IO.Path]::PathSeparator + (Join-Path -Path . -ChildPath 'Modules/Microsoft365DSC')
-          Write-Output "PSModulePath = $($env:PSModulePath)"
           Import-Module './Tests/TestHarness.psm1' -Force;
           $MaximumFunctionCount = 32767
 
@@ -98,8 +97,8 @@ jobs:
       - name: Run Test Harness
         shell: pwsh
         run: |
-          $env:PSModulePath = $env:PSModulePath + [System.IO.Path]::PathSeparator + (Join-Path -Path . -ChildPath 'Modules/Microsoft365DSC')
-          Write-Output "PSModulePath = $($env:PSModulePath)"
+          #$env:PSModulePath = $env:PSModulePath + [System.IO.Path]::PathSeparator + (Join-Path -Path . -ChildPath 'Modules/Microsoft365DSC')
+          New-Item -Type SymbolicLink -Path "C:\Program Files\WindowsPowerShell\Modules\Microsoft365DSC" -Target (Join-Path -Path . -ChildPath 'Modules/Microsoft365DSC' -Resolve)
           Import-Module './Tests/TestHarness.psm1' -Force;
           $MaximumFunctionCount = 32767
 
