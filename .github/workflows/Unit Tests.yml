@@ -37,14 +37,11 @@ jobs:
         run: |
           & ./Utilities/Build-DllFiles.ps1 -Configuration Release
 
-      - name: Add repo dir to PSModulePath
-        shell: pwsh
-        run: |
-          $env:PSModulePath = $env:PSModulePath + [System.IO.Path]::PathSeparator + (Join-Path -Path . -ChildPath 'Modules/Microsoft365DSC')
-
       - name: Run Quality Checks
         shell: pwsh
         run: |
+          $env:PSModulePath = $env:PSModulePath + [System.IO.Path]::PathSeparator + (Join-Path -Path . -ChildPath 'Modules/Microsoft365DSC')
+          Write-Output "PSModulePath = $($env:PSModulePath)"
           Import-Module './Tests/TestHarness.psm1' -Force;
           $MaximumFunctionCount = 32767
 
@@ -106,6 +103,8 @@ jobs:
       - name: Run Test Harness
         shell: pwsh
         run: |
+          $env:PSModulePath = $env:PSModulePath + [System.IO.Path]::PathSeparator + (Join-Path -Path . -ChildPath 'Modules/Microsoft365DSC')
+          Write-Output "PSModulePath = $($env:PSModulePath)"
           Import-Module './Tests/TestHarness.psm1' -Force;
           $MaximumFunctionCount = 32767
 
