@@ -37,17 +37,10 @@ jobs:
         run: |
           & ./Utilities/Build-DllFiles.ps1 -Configuration Release
 
-      - name: Link repo dir to module path
+      - name: Add repo dir to PSModulePath
         shell: pwsh
         run: |
-          $Parameters = @{
-              ItemType = 'SymbolicLink'
-              Force    = [Switch]$true
-              Path     = '/Program Files/WindowsPowerShell/Modules/Microsoft365DSC'
-              Target   = './Modules/Microsoft365DSC'
-          }
-          $null = New-Item @Parameters
-          Import-Module '/Program Files/WindowsPowerShell/Modules/Microsoft365DSC/Microsoft365DSC.psd1'
+          $env:PSModulePath = $env:PSModulePath + [System.IO.Path]::PathSeparator + (Join-Path -Path . -ChildPath 'Modules/Microsoft365DSC')
 
       - name: Run Quality Checks
         shell: pwsh
@@ -105,17 +98,10 @@ jobs:
         run: |
           & ./Utilities/Build-DllFiles.ps1 -Configuration Release
 
-      - name: Link repo dir to module path
+      - name: Add repo dir to PSModulePath
         shell: pwsh
         run: |
-          $Parameters = @{
-              ItemType = 'SymbolicLink'
-              Force    = [Switch]$true
-              Path     = '/Program Files/WindowsPowerShell/Modules/Microsoft365DSC'
-              Target   = './Modules/Microsoft365DSC'
-          }
-          $null = New-Item @Parameters
-          Import-Module '/Program Files/WindowsPowerShell/Modules/Microsoft365DSC/Microsoft365DSC.psd1'
+          $env:PSModulePath = $env:PSModulePath + [System.IO.Path]::PathSeparator + (Join-Path -Path . -ChildPath 'Modules/Microsoft365DSC')
 
       - name: Run Test Harness
         shell: pwsh
