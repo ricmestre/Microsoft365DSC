@@ -37,6 +37,17 @@ jobs:
         run: |
           & ./Utilities/Build-DllFiles.ps1 -Configuration Release
 
+      - name: Link repo dir to module path
+        shell: pwsh
+        run: |
+          $Parameters = @{
+              ItemType = 'SymbolicLink'
+              Force    = [Switch]$true
+              Path     = '/Program Files/WindowsPowerShell/Modules/Microsoft365DSC'
+              Target   = './Modules/Microsoft365DSC'
+          }
+          $null = New-Item @Parameters
+
       - name: Run Quality Checks
         shell: pwsh
         run: |
