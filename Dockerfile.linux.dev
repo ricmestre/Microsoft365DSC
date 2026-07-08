@@ -39,7 +39,7 @@ RUN mv /etc/opt/omi/conf/dsc/configuration/baseregistration /etc/opt/omi/conf/ds
     mv /etc/opt/omi/conf/dsc/configuration/BaseRegistration/baseresource.schema.mof /etc/opt/omi/conf/dsc/configuration/BaseRegistration/BaseResource.schema.mof
 
 COPY . .
-#RUN ln -s ./Modules/Microsoft365DSC /usr/share/powershell/.store/powershell.linux.x64/7.6.2/powershell.linux.x64/7.6.2/tools/net10.0/any/Modules/Microsoft365DSC
+
 RUN pwsh -Command ./Utilities/Install-M365DSCAndDependencies.ps1 -IsSDK
 
 ENTRYPOINT ["pwsh", "-NoLogo"]

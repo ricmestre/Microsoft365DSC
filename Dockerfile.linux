@@ -52,10 +52,7 @@ RUN mv /etc/opt/omi/conf/dsc/configuration/baseregistration /etc/opt/omi/conf/ds
     mv /etc/opt/omi/conf/dsc/configuration/BaseRegistration/baseresource.schema.mof /etc/opt/omi/conf/dsc/configuration/BaseRegistration/BaseResource.schema.mof
 
 COPY ./Utilities/Install-M365DSCAndDependencies.ps1 /DSC/Install-M365DSCAndDependencies.ps1
-RUN pwsh -Command /DSC/Install-M365DSCAndDependencies.ps1
 
-# These next two commands should be removed after next release of Microsoft365DSC
-COPY ./Modules/Microsoft365DSC/Modules/*.psm1 /usr/local/share/powershell/Modules/Microsoft365DSC/1.26.701.1/Modules/
-RUN pwsh -Command "Import-Module -Force 'Microsoft365DSC'; Update-M365DSCDependencies"
+RUN pwsh -Command /DSC/Install-M365DSCAndDependencies.ps1
 
 ENTRYPOINT ["pwsh", "-NoLogo"]
