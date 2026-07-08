@@ -47,6 +47,7 @@ jobs:
               Target   = './Modules/Microsoft365DSC'
           }
           $null = New-Item @Parameters
+          Import-Module '/Program Files/WindowsPowerShell/Modules/Microsoft365DSC/Microsoft365DSC.psd1'
 
       - name: Run Quality Checks
         shell: pwsh
@@ -114,6 +115,7 @@ jobs:
               Target   = './Modules/Microsoft365DSC'
           }
           $null = New-Item @Parameters
+          Import-Module '/Program Files/WindowsPowerShell/Modules/Microsoft365DSC/Microsoft365DSC.psd1'
 
       - name: Run Test Harness
         shell: pwsh
