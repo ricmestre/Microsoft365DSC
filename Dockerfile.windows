@@ -8,4 +8,7 @@ SHELL ["cmd", "/S", "/C"]
 
 RUN powershell -Command .\Install-M365DSCAndDependencies.ps1
 
-ENTRYPOINT ["pwsh", "-NoLogo", "-NoProfile"]
+# This next command should be removed after next release of Microsoft365DSC
+COPY ["./Modules/Microsoft365DSC/Modules/*.psm1", "/Program Files/WindowsPowerShell/Modules/Microsoft365DSC/1.26.701.1/Modules/"]
+
+ENTRYPOINT ["pwsh", "-NoLogo"]

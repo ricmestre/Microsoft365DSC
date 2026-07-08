@@ -93,29 +93,6 @@ jobs:
         run: |
           & ./Utilities/Build-DllFiles.ps1 -Configuration Release
 
-      - name: Move Module Files to temp directory
-        shell: pwsh
-        run: |
-          $manifest = Test-ModuleManifest -Path './Modules/Microsoft365DSC/Microsoft365DSC.psd1'
-          $version = $manifest.Version
-          $stagingPath = "$env:TEMP\Staging"
-          if (-not (Test-Path -Path $stagingPath))
-          {
-              New-Item -Path $stagingPath -ItemType Directory -Force
-          }
-          $modulePath = "$stagingPath\Microsoft365DSC"
-          if (-not (Test-Path -Path $modulePath))
-          {
-              New-Item -Path $modulePath -ItemType Directory -Force
-          }
-          $modulePath = "$modulePath\$version"
-          if (Test-Path -Path $modulePath)
-          {
-              Remove-Item -Path $modulePath -Recurse -Force
-          }
-          New-Item -Path $modulePath -ItemType Directory -Force
-          Copy-Item -Path './Modules/Microsoft365DSC/*' -Destination $modulePath -Recurse -Force
-
       - name: Run Test Harness
         shell: pwsh
         run: |
@@ -124,13 +101,13 @@ jobs:
 
           try
           {
-              $results = Invoke-TestHarness -ModuleDirectory "$env:TEMP\Staging"
+              $results = Invoke-TestHarness
           }
           catch
           {
               $MaximumFunctionCount = 32767
               Import-Module './Tests/TestHarness.psm1' -Force;
-              $results = Invoke-TestHarness -ModuleDirectory "$env:TEMP\Staging"
+              $results = Invoke-TestHarness
           }
           if ($results.FailedCount -gt 0)
           {
